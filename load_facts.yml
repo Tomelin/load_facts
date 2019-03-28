@@ -1,8 +1,34 @@
 ---
 - hosts: all
-  become: yes
+  gather_facts: yes
+  vars:
+
+    tags: null
 
   tasks:
-    - name: load_facts
-      debug:
-        msg: load facts
+
+    - name: "Create custom fact directory"
+      file:
+        path: "/etc/ansible/facts.d"
+        state: "directory"
+
+    - name: "Insert custom fact file"
+      copy:
+        src: files/custom.fact
+        dest: /etc/ansible/facts.d/custom.fact
+        mode: 0755
+
+    - name: "Insert custom fact preferences.fact"
+      copy:
+        src: files/preferences.fact
+        dest: /etc/ansible/facts.d/preferences.fact
+        mode: 0755
+
+    - debug: var=ansible_facts
+
+    - name: Collect only facts returned by facter
+      setup:
+        gather_subset:
+          - '!all'
+          - '!any'
+          - facter

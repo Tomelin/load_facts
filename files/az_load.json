@@ -1,0 +1,7 @@
+{
+  "module_name": "command",
+  "module_args": "uptime",
+  "inventory": 2,
+  "credential": 6,
+  "limit": "albpcl00020"
+}
